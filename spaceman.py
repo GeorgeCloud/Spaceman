@@ -11,7 +11,6 @@ def get_word_list():
 
 def start_spaceman():
     system('clear')
-    guesses_left = 7
     dash = "-" * 110
     words = get_word_list()
     correct_word = choice(words)
@@ -19,11 +18,12 @@ def start_spaceman():
     correct_word_len = len(correct_word)
     hidden_word = list("_" * correct_word_len)
     letters_not_guessed = list("abcdefghijklmnopqrstuvwxyz")
+    guesses_left = correct_word_len
 
-    print("""
+    print(f"""
           Welcome to Spaceman!
-          The secret word contains 5 letters
-          You have 7 incorect guesses, please enter only one letter
+          The secret word contains {correct_word_len} letters
+          You have {guesses_left} incorect guesses, please enter only one letter
           """)
 
     while True:
