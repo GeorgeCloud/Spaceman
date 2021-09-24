@@ -17,9 +17,8 @@ def start_spaceman():
     word_left = list(correct_word)
     correct_word_len = len(correct_word)
     hidden_word = list("_" * correct_word_len)
-    dash = "-" * 32
-
-    # refractor
+    letters_not_guessed = list("abcdefghijklmnopqrstuvwxyz")
+    dash = "-" * 100
     guesses_left = 7
 
     print("Welcome to Spaceman!")
@@ -29,28 +28,33 @@ def start_spaceman():
 
     while True:
         guess = input("Enter a letter: ").lower()
-
-        if not guess.isalpha():
-            guess = input("Enter a letter: ").lower()
+        if not guess.isalpha() or guess not in letters_not_guessed:
+            print("Only letters allowed! Can't guess same letter")
             continue
-        try:
-            print(correct_word)
-            index = word_left.index(guess)
-            # print(f"index: {index}")
-            print("Your guess appears in the word!")
-            hidden_word[index] = guess
-            word_left[index] = "-"
-            # CHECK FOR DUPLICATE LETTERS, # of occurences
-            print(f"Guesses word so far: {''.join(hidden_word)}")
-        except:
+
+        print(f"correct word: {correct_word}")
+
+        letters_not_guessed.remove(guess)
+        occurences = word_left.count(guess)
+
+        if occurences:
+            for _ in range(occurences):
+                index = word_left.index(guess)
+                hidden_word[index] = guess
+                word_left[index] = "-"
+                print("Your guess appears in the word!")
+                print(f"Guessed word so far: {''.join(hidden_word)}")
+                print(f"Letters not guessed yet: {', '.join(letters_not_guessed)}")
+                print(dash)
+        else:
             guesses_left -= 1
             print("Sorry your guess was not in the word, try again")
             print(f"Your have {guesses_left} guesses left")
+            continue
 
         if correct_word == "".join(hidden_word):
             print(f"Nice you guessed the word: {correct_word} with {guesses_left} attempts left!")
             break
-            # if True in [True for c in word_left if c.isdigit()]
 
         elif guesses_left < 1:
             print("You Lost..............")
