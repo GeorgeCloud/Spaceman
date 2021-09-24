@@ -14,9 +14,9 @@ def get_word_list():
 def start_spaceman():
     words = get_word_list()
     correct_word = choice(words)
-    word_left = correct_word
+    word_left = list(correct_word)
     correct_word_len = len(correct_word)
-    hidden_word = "_" * correct_word_len
+    hidden_word = list("_" * correct_word_len)
     dash = "-" * 32
 
     # refractor
@@ -27,30 +27,33 @@ def start_spaceman():
     print("You have 7 incorect guesses, please enter only one letter")
     print(dash)
 
-    # Check if only letter isalpha
-    guess = input("Enter a letter: ").lower()
+    while True:
+        guess = input("Enter a letter: ").lower()
 
-    while True
-        if guess.isalpha():
-            guess = input("Enter a letter: ")
-            # return back; continue
+        if not guess.isalpha():
+            guess = input("Enter a letter: ").lower()
+            continue
         try:
+            print(correct_word)
             index = word_left.index(guess)
-            if index:
-                hidden_word[index] = guess
-            # if guess in word_left:
-            #     word_left
-        # except ValueError as e:
-        #     raise e
+            # print(f"index: {index}")
+            print("Your guess appears in the word!")
+            hidden_word[index] = guess
+            word_left[index] = "-"
+            # CHECK FOR DUPLICATE LETTERS, # of occurences
+            print(f"Guesses word so far: {''.join(hidden_word)}")
+        except:
+            guesses_left -= 1
+            print("Sorry your guess was not in the word, try again")
+            print(f"Your have {guesses_left} guesses left")
 
-
-
-        guesses_left -= 1
-        if guess_attempt == correct_word or guesses_left < 1:
+        if correct_word == "".join(hidden_word):
+            print(f"Nice you guessed the word: {correct_word} with {guesses_left} attempts left!")
             break
+            # if True in [True for c in word_left if c.isdigit()]
 
-
-    import pdb; pdb.set_trace()
-
+        elif guesses_left < 1:
+            print("You Lost..............")
+            break
 
 start_spaceman()
